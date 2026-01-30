@@ -1,0 +1,50 @@
+CI/CD pipeline workflow in github actions- whenever there is a new git push hanppens to the git repo - the pipline gets triggered.
+The github actions flow should rebuild the docker image and push the final version into aws EC2 machine and run the container with new image and should launch the application.
+
+1. You push code to GitHub - 
+   mkdir reponame
+   cd reponame
+   git init
+   git add .
+   git remote 
+   git commit -m
+   git push
+   ↓
+2. GitHub Actions detects push to main branch
+   ↓
+3. JOB 1: build-and-push
+   - Checkout code from repo
+   - Set up Docker Buildx
+   - Login to Docker Hub
+   - Create image tags
+   - Build Docker image from Dockerfile
+   - Push image to Docker Hub
+   ↓
+4. JOB 2: deploy (only if job 1 succeeds)
+   - SSH into EC2
+   - Login to Docker Hub
+   - Pull latest image
+   - Stop old container
+   - Remove old container
+   - Run new container on port 80
+   - Clean up old images
+   - Logout from Docker Hub
+   ↓
+5. Your app is now live at http://ec2 publicIP
+
+
+```Complete Step-by-Step Guide
+Phase 1: Create Sample Application - package.json, server.js, Dockerfile 
+Phase 2: Push to GitHub , ensure the git repo is created
+phase 3: create github actions workflow - can be created in local and be pushed to GitHub , basiclaly wcicd.yml file
+Phase 4: Configure Secrets in the GitHub settings for the repo - DockerHub credentails, EC2 ip, username and SSH private key .pem file
+Phase 5: Ensure EC2 instance is running, docker is installed
+Phase 6: Trigger the workflow by pushing something from local git to github repo - The pipleine will run Build +Deploy job
+Phase 7: Test the pipline- see if the ec2 public ip runs the application and its changes. or curl ip in terminal
+
+NOTE for Secrets in GitHub:
+DOCKERHUB_USERNAME: Your Docker Hub username
+DOCKERHUB_TOKEN: Token from step 1
+EC2_HOST: Your EC2 public IP (e.g., 54.123.45.67)
+EC2_USERNAME: Usually ubuntu or ec2-user
+EC2_SSH_PRIVATE_KEY: Your EC2 private key content
