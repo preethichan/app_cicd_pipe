@@ -9,3 +9,4 @@ npm start
 ```
 
 Application runs on http://localhost:8080
+# Force rebuild
