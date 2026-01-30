@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 8080;
 app.get('/', (req, res) => {
   res.json({ 
     message: 'Hello from CI/CD Pipeline!',
-    version: '1.0.1',
+    version: '1.0.2',
     timestamp: new Date().toISOString()
   });
 });
